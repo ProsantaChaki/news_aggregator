@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import NewsCard from "./NewsCard.jsx";
 import { FaSearch } from 'react-icons/fa';
+import {testApiCall} from "../common/apiCall/api.js";
 
 const News = () => {
+
+    useEffect(() => {
+        testApiCall().then(response=> console.log( response?.data)).catch(err=> console.log(err));
+    }, []);
 
 
     useEffect(() => {
