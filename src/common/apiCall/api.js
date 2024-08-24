@@ -67,3 +67,22 @@ export function userUpdateApiCall(payload) {
         false,
     );
 }
+
+
+export function newsApiApiCall(queryParam=false) {
+    let url = process.env.REACT_APP_API_URL;
+    if (queryParam){
+        url = url+'?'+queryParam;
+    }
+    return apiGet(
+        url,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+        },
+        false,
+        true,
+    );
+}

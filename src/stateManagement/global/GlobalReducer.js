@@ -5,7 +5,6 @@ import {
   LOADER_HIDE,
   UPDATE_IS_AUTHENTICATEED,
   TEST_DATA_UPDATE,
-  SET_GLOBAL_SETTINGS,SET_VALIDITY
 } from './GlobalActionTypes';
 
 const initialState = {

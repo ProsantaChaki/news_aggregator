@@ -1,10 +1,13 @@
+
 import React, {useEffect, useState} from 'react';
 import NewsCard from "./NewsCard.jsx";
 import { FaSearch } from 'react-icons/fa';
-import {testApiCall} from "../common/apiCall/api.js";
 import getGlobalState from '../stateManagement/global/globalSelector';
 import getAuthState from '../stateManagement/auth/AuthSelector';
 import { connect } from 'react-redux';
+import { newsApiCallWorker } from '../stateManagement/global/GlobalActionCreators';
+import * as process from "node:process";
+
 
 const mapStateToProps = (state) => ({
     isAuthenticated: getGlobalState(state)?.isAuthenticated,
@@ -13,19 +16,22 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    newsApiCallWorkerProp: (data) => dispatch(newsApiCallWorker(data)),
+
 });
 
 
 const News = (props) => {
 
     useEffect(() => {
-        testApiCall().then(response=> console.log( response?.data)).catch(err=> console.log(err));
+        //props.newsApiCallWorkerProp()
+
+        //testApiCall().then(response=> console.log( response?.data)).catch(err=> console.log(err));
     }, []);
 
 
     useEffect(() => {
-        console.log(window.location.href);
-        console.log('............',props.testData);
+       console.log('............',process.env)
     }, []);
 
     const newsArticles = [
@@ -53,7 +59,7 @@ const News = (props) => {
                 <div className="container mx-auto flex flex-wrap items-center justify-between">
                     {/* Logo Section */}
                     <div className="flex items-center space-x-4">
-                        <div className="text-2xl font-bold">daily.dev</div>
+                        <div className="text-2xl font-bold">daily.dev </div>
                     </div>
 
                     {/* Search Bar */}
