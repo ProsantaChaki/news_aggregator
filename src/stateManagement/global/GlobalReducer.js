@@ -5,6 +5,7 @@ import {
   LOADER_HIDE,
   UPDATE_IS_AUTHENTICATEED,
   TEST_DATA_UPDATE,
+  NEWS_STORE
 } from './GlobalActionTypes';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   commonModalButtonText: '',
   isLoading: false,
   testData:'welcome',
+  news:[],
 };
 
 export default function (state = initialState, action) {
@@ -57,6 +59,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isAuthenticated: false,
+      };
+    case NEWS_STORE:
+      return {
+        ...state,
+        news: payload?.news,
       };
 
 

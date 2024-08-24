@@ -3,13 +3,21 @@ import {
   COMMON_MODAL_DATA_SET,
   LOADER_SHOW,
   LOADER_HIDE,
-  NEWS_API_CALL
+  NEWS_API_CALL,
+  NEWS_STORE
 } from './GlobalActionTypes';
 
 function newsApiCallWorker(message){
   return{
     type: NEWS_API_CALL,
     payload: {message:message}
+  }
+}
+function newsDataStore(payload){
+  console.log(payload);
+  return{
+    type: NEWS_STORE,
+    payload: {news:payload}
   }
 }
 
@@ -40,5 +48,6 @@ export {
   setIsAuthenticated,
   commonModalDataSet,
   showLoader,
-  newsApiCallWorker
+  newsApiCallWorker,
+  newsDataStore
 };

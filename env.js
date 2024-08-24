@@ -1,0 +1,12 @@
+export const REACT_APP_API_URL = "https://api.example.com"
+export const REACT_APP_API_KEY= "your-api-key"
+
+export const REACT_APP_NEWS_API_URL= "https://newsapi.org/v2"
+export const REACT_APP_NEWS_API_TOKEN= "ae0ffd5716c54771bd1d9a23f325c5e4"
+export const REACT_APP_OPEN_NEWS_URL= "https://newsapi.org/v2"
+export const REACT_APP_OPEN_NEWS_TOKEN= "https://newsapi.org/v2"
+export const REACT_APP_NEWS_CRED_URL= "https://newsapi.org/v2"
+export const REACT_APP_THE_GUARDIAN_URL= "https://newsapi.org/v2"
+export const REACT_APP_THE_GUARDIAN_TOKEN= "https://newsapi.org/v2"
+export const REACT_APP_NEW_YORK_TIME_URL= "https://newsapi.org/v2"
+export const REACT_APP_NEW_YORK_TIME_TOKEN= "https://newsapi.org/v2"

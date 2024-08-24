@@ -11,30 +11,32 @@ import {
   authLoginApiCall,
 } from '../auth/AuthActionCreators';
 import {
+    newsApiApiCall
 } from '../../common/apiCall/api';
 import {
-  // hideLoader,
-  // showLoader,
+    newsDataStore
+    // hideLoader,
+    // showLoader,
 } from './GlobalActionCreators';
+
+import {newsApiDataProcessing} from '../../common/dataProcessing.js';
 
 
 function* newsDataFetchWorker({payload}) {
   try {
-    const {isAuthenticated} = payload;
-    const loginData = {
-      cell_phone: yield call(getUserName),
-      password: yield call(getUserPassword),
-    };
-    if (!isAuthenticated && loginData.cell_phone && loginData.password) {
+      let news =[]
+      console.log('.....globalSaga newsDataFetchWorker')
+      let queryParam = "q=Joe Biden&sortBy=popularity"
+      let res = yield call(newsApiApiCall, queryParam);
+      if(res.status == 'ok') {
+           news = yield call(newsApiDataProcessing, res?.articles);
+          console.log('33',news)
+      }
       yield put(
-        authLoginApiCall({
-          cell_phone: '' + loginData.cell_phone,
-          password: '' + loginData.password,
-          isSilent: true,
-          device_token: '-_-',
-        }),
+          newsDataStore(news),
       );
-    }
+      console.log('38',res)
+
   } catch (e) {
     console.log(e);
   }

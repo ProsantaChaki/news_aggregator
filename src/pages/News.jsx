@@ -11,7 +11,7 @@ import * as process from "node:process";
 
 const mapStateToProps = (state) => ({
     isAuthenticated: getGlobalState(state)?.isAuthenticated,
-    testData: getGlobalState(state)?.testData,
+    newsArticles: getGlobalState(state)?.news,
     userProfile: getAuthState(state)?.userProfile,
 });
 
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
 const News = (props) => {
 
     useEffect(() => {
-        //props.newsApiCallWorkerProp()
+        props.newsApiCallWorkerProp()
 
         //testApiCall().then(response=> console.log( response?.data)).catch(err=> console.log(err));
     }, []);
@@ -84,7 +84,7 @@ const News = (props) => {
 
             <main className="container mx-auto p-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {newsArticles.map((article, index) => (
+                    {props.newsArticles.map((article, index) => (
                         <NewsCard key={index} article={article}/>
                     ))}
                 </div>

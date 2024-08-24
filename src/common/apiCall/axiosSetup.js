@@ -18,7 +18,7 @@ axiosInstance.defaults.timeout = 300000;
 axios.defaults.headers.common.Accept = 'application/json';
 axiosInstance.defaults.headers.common.Accept = 'application/json';
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axiosInstance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // disable cache
 axiosInstance.defaults.headers.common['Cache-Control'] = 'no-cache';

@@ -1,4 +1,5 @@
 import {apiDelete, apiGet, apiPost, apiPut} from './axiosSetup';
+import * as env from '../../../env.js';
 import {
     LOGIN_URL,
     OTP_LOGIN_URL, TEST_API,
@@ -70,9 +71,12 @@ export function userUpdateApiCall(payload) {
 
 
 export function newsApiApiCall(queryParam=false) {
-    let url = process.env.REACT_APP_API_URL;
+    let url = env.REACT_APP_NEWS_API_URL;
     if (queryParam){
-        url = url+'?'+queryParam;
+        url = url+'/everything?'+queryParam+'&apiKey='+env.REACT_APP_NEWS_API_TOKEN;
+    }else{
+        url = url+'/everything?apiKey='+env.REACT_APP_NEWS_API_TOKEN;
+
     }
     return apiGet(
         url,
