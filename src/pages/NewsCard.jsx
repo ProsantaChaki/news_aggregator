@@ -3,48 +3,57 @@ import { FaRegComment, FaRegHeart, FaRegBookmark } from 'react-icons/fa';
 
 const NewsCard = (props) => {
     const {article}= props;
+    let [error, setError] = useState(false);
 
-    return (
-        <div className="bg-gray-800 text-white rounded-lg p-4 shadow-lg">
-            {/* Category Indicator */}
+    const handleCardClick = () => {
+        window.open(article.url, '_blank');
+    };
+
+    const handleButtonClick = (e) => {
+        e.stopPropagation(); // Prevent triggering the card click event
+        window.open(article.url, '_blank');
+    };
+
+    return (!error ?
+        <div
+            className="bg-gray-800 text-white p-4 rounded-lg shadow-lg relative cursor-pointer group"
+            onClick={handleCardClick}
+        >
+            <button
+                onClick={handleButtonClick}
+                className="absolute top-2 right-2 bg-blue-500 text-white p-1 pr-3 pl-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-blue-700"
+            >
+                Read Article
+            </button>
+
             <div className="flex items-center space-x-2 mb-2">
                 <div className="bg-purple-500 p-2 rounded-full">
                     <FaRegBookmark className="text-white"/>
                 </div>
             </div>
 
-
             <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-2">
-                <span className="bg-gray-700 text-xs px-2 py-1 rounded">#architecture</span>
-                <span className="bg-gray-700 text-xs px-2 py-1 rounded">#microservices</span>
+                <span className="bg-gray-700 text-xs px-2 py-1 rounded">{article.author}</span>
             </div>
 
+            <p className="text-gray-400 text-sm mb-4">{article.publishedAt}</p>
 
-            <p className="text-gray-400 text-sm mb-4">{article.time}</p>
-
-            {/* Image */}
             <img
-                src="https://via.placeholder.com/400x200"
+                src={article.urlToImage || 'https://via.placeholder.com/100'}
                 alt="Article"
                 className="w-full h-auto rounded-lg mb-4"
+                onError={(e) => {
+                    setError(true)
+
+                }}
             />
 
-            {/* Interaction Icons */}
             <div className="flex items-center justify-between text-gray-400">
-                <div className="flex items-center space-x-4">
-                    <span className="flex items-center space-x-1">
-                        <FaRegHeart/> <span>{article.reactions} </span>
-                    </span>
-                    <span className="flex items-center space-x-1">
-                        <FaRegComment/> <span>{article.comments}</span>
-                    </span>
-                </div>
                 <FaRegBookmark/>
             </div>
-        </div>
+        </div>:null
     );
 
     return (

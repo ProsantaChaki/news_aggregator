@@ -1,0 +1,6 @@
+export const REACT_APP_NEWS_API_ORG_URL= "https://newsapi.org/v2"
+export const REACT_APP_NEWS_API_ORG_TOKEN= ""
+export const REACT_APP_NEWS_API_URL= "https://eventregistry.org/api/v1/article/getArticles"
+export const REACT_APP_NEWS_API_TOKEN= ""
+export const REACT_APP_NEW_YORK_TIME_URL= "https://api.nytimes.com/svc/search/v2/articlesearch.json"
+export const REACT_APP_NEW_YORK_TIME_TOKEN= ""
