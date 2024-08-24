@@ -159,12 +159,15 @@ async function apiPost(
   data,
   config = {},
   useMock = false,
+  external = false,
   withCredentials = false,
 ) {
   const newConfig = await headerConfiguration(apiPath, config, data?.token ?? '');
   const transformedData = transformConfig(newConfig, data);
   const axiosToUse = useMock ? axiosInstance : axios;
-  const fullUrl = useMock ? apiPath : API_BASE_URL + apiPath;
+  // const fullUrl = useMock ? apiPath : API_BASE_URL + apiPath;
+  const fullUrl = useMock || external ? apiPath : API_BASE_URL + apiPath;
+
   return await axiosToUse
     .post(fullUrl, transformedData, newConfig)
     .then(response => response.data)

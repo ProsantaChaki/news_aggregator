@@ -11,7 +11,7 @@ import {
   authLoginApiCall,
 } from '../auth/AuthActionCreators';
 import {
-    newsApiApiCall
+    newsApiApiCall, newsApiCall, newsYorkTimeApiCall,
 } from '../../common/apiCall/api';
 import {
     newsDataStore
@@ -19,23 +19,32 @@ import {
     // showLoader,
 } from './GlobalActionCreators';
 
-import {newsApiDataProcessing} from '../../common/dataProcessing.js';
+import {newsApiDataProcessing, newsYorkTimeDataProcessing, newsProcessing, mergeAndShuffleArrays} from '../../common/dataProcessing.js';
 
 
 function* newsDataFetchWorker({payload}) {
   try {
       let news =[]
-      console.log('.....globalSaga newsDataFetchWorker')
-      let queryParam = "q=Joe Biden&sortBy=popularity"
-      let res = yield call(newsApiApiCall, queryParam);
-      if(res.status == 'ok') {
-           news = yield call(newsApiDataProcessing, res?.articles);
-          console.log('33',news)
+      let news2 =[]
+      let news3 =[]
+      payload.search = payload.search.len>0?payload.search:'ne'
+      let  queryParam ="q="+payload.search+"&sortBy=popularity"
+      let newsApiOrg = yield call(newsApiApiCall, queryParam);
+      if(newsApiOrg.status == 'ok') news = yield call(newsApiDataProcessing, newsApiOrg?.articles)
+      let newsYorkTime = yield call(newsYorkTimeApiCall, queryParam);
+      if(newsYorkTime.status == 'ok') {
+          news2 = yield call(newsYorkTimeDataProcessing, newsYorkTime?.docs)
       }
+      let newsApi = yield call(newsApiCall, queryParam);
+
+      if(newsApi.articles && newsApi.articles?.results?.length > 0){
+          news3 = yield call(newsProcessing, newsApi.articles?.results)
+      }
+      let allNews = yield call(mergeAndShuffleArrays, news, news3, news2)
+
       yield put(
-          newsDataStore(news),
+          newsDataStore(allNews),
       );
-      console.log('38',res)
 
   } catch (e) {
     console.log(e);

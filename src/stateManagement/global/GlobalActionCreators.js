@@ -7,10 +7,10 @@ import {
   NEWS_STORE
 } from './GlobalActionTypes';
 
-function newsApiCallWorker(message){
+function newsApiCallWorker(payload){
   return{
     type: NEWS_API_CALL,
-    payload: {message:message}
+    payload
   }
 }
 function newsDataStore(payload){
