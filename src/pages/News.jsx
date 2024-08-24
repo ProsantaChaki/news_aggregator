@@ -2,8 +2,21 @@ import React, {useEffect, useState} from 'react';
 import NewsCard from "./NewsCard.jsx";
 import { FaSearch } from 'react-icons/fa';
 import {testApiCall} from "../common/apiCall/api.js";
+import getGlobalState from '../stateManagement/global/globalSelector';
+import getAuthState from '../stateManagement/auth/AuthSelector';
+import { connect } from 'react-redux';
 
-const News = () => {
+const mapStateToProps = (state) => ({
+    isAuthenticated: getGlobalState(state)?.isAuthenticated,
+    testData: getGlobalState(state)?.testData,
+    userProfile: getAuthState(state)?.userProfile,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+});
+
+
+const News = (props) => {
 
     useEffect(() => {
         testApiCall().then(response=> console.log( response?.data)).catch(err=> console.log(err));
@@ -12,6 +25,7 @@ const News = () => {
 
     useEffect(() => {
         console.log(window.location.href);
+        console.log('............',props.testData);
     }, []);
 
     const newsArticles = [
@@ -66,12 +80,13 @@ const News = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {newsArticles.map((article, index) => (
                         <NewsCard key={index} article={article}/>
-                    ))}                </div>
+                    ))}
+                </div>
             </main>
         </div>
 
 )
     ;
 };
+export default connect(mapStateToProps, mapDispatchToProps)(News);
 
-export default News;
