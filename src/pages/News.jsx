@@ -36,24 +36,17 @@ const News = (props) => {
         });
     }, [searchTerm,selectedDate,selectedCategory,selectedSource]);
 
-    useEffect(() => {
-        console.log('----------',props.newsArticles)
-   }, [props.newsArticles]);
-
 
     const handleDateChange = (e) => {
         setSelectedDate(e.target.value);
-        // Implement your filtering logic here
     };
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        // Implement your filtering logic here
     };
 
     const handleSourceChange = (e) => {
         setSelectedSource(e.target.value);
-        // Implement your filtering logic here
     };
 
     return (

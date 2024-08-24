@@ -14,7 +14,6 @@ function newsApiCallWorker(payload){
   }
 }
 function newsDataStore(payload){
-  console.log(payload);
   return{
     type: NEWS_STORE,
     payload: {news:payload}

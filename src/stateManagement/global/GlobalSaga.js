@@ -28,7 +28,6 @@ function* newsDataFetchWorker({payload}) {
     let news2 = [];
     let news3 = [];
 
-    console.log(payload)
     try {
         payload.search = payload.search.length > 0 ? payload.search : 'ne';
         let queryParam = "q=" + payload.search + "&sortBy=popularity";
@@ -40,7 +39,6 @@ function* newsDataFetchWorker({payload}) {
                 }
             }
         } catch (error) {
-            console.error("Error fetching news from newsApiOrg:", error);
         }
         try {
             if(payload.source == 'all' || payload.source == 'ny_time') {
@@ -50,7 +48,6 @@ function* newsDataFetchWorker({payload}) {
                 }
             }
         } catch (error) {
-            console.error("Error fetching news from newsYorkTime:", error);
         }
         try {
             if(payload.source == 'all' || payload.source == 'news_api') {
@@ -60,7 +57,6 @@ function* newsDataFetchWorker({payload}) {
                 }
             }
         } catch (error) {
-            console.error("Error fetching news from newsApi:", error);
         }
         let allNews = yield call(mergeAndShuffleArrays, news, news3, news2);
         yield put(newsDataStore(allNews));
