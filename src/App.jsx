@@ -7,9 +7,6 @@ import Store from './stateManagement/Store';
 
 function App() {
 
-    useEffect(() => {
-        console.log(window.location.href + 'app');
-    }, []);
     return (
         <Provider store={Store}>
             <Router>

@@ -13,7 +13,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
   const {type, payload} = action;
-  console.log(action)
   switch (type) {
 
     case AUTH_SIGNUP_DATA_STORE:

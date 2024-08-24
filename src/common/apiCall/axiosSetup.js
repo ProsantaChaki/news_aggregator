@@ -53,7 +53,6 @@ function handleFetchErrors(response) {
 }
 
 async function headerConfiguration(url, config, token=null)  {
-  console.log(url)
   if (url !== LOGIN_URL && url !== SIGNUP_URL ) {
 
     //TODO: set access token
@@ -101,7 +100,6 @@ const errorHandler = error => {
       if (isDefined(response.data, 'errors')) {
         throw new AxiosError(response.data.errors, response.status);
       } else {
-        console.log('Error else');
         throw new AxiosError(response.config, response.status);
       }
     }
@@ -114,14 +112,11 @@ const errorHandler = error => {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    console.log('full request (Net Problem): ', error.request);
-    console.log('full error (Net Problem): ', error.toJSON());
 
 
     throw new GeneralError('SERVER_DOWN', 99999);
   }
   // Something happened in setting up the request that triggered an Error
-  console.log('Error', error.message);
   throw new GeneralError(
     'Opps! There was a problem. Please try again later.',
     400,

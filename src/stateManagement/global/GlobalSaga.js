@@ -20,6 +20,7 @@ import {
 } from './GlobalActionCreators';
 
 import {newsApiDataProcessing, newsYorkTimeDataProcessing, newsProcessing, mergeAndShuffleArrays} from '../../common/dataProcessing.js';
+import React from "react";
 
 
 function* newsDataFetchWorker({payload}) {
@@ -28,44 +29,36 @@ function* newsDataFetchWorker({payload}) {
     let news3 = [];
 
     try {
-        // Setting default search query if payload.search is empty
         payload.search = payload.search.length > 0 ? payload.search : 'ne';
         let queryParam = "q=" + payload.search + "&sortBy=popularity";
-
-        // Try the first API call
         try {
-            let newsApiOrg = yield call(newsApiApiCall, queryParam);
-            if (newsApiOrg.status == 'ok') {
-                news = yield call(newsApiDataProcessing, newsApiOrg?.articles);
+            if(payload.source == 'all' || payload.source == 'news_ap_org') {
+                let newsApiOrg = yield call(newsApiApiCall, queryParam);
+                if (newsApiOrg.status == 'ok') {
+                    news = yield call(newsApiDataProcessing, newsApiOrg?.articles);
+                }
             }
         } catch (error) {
-            console.error("Error fetching news from newsApiOrg:", error);
         }
-
-        // Try the second API call
         try {
-            let newsYorkTime = yield call(newsYorkTimeApiCall, queryParam);
-            if (newsYorkTime.status == 'ok') {
-                news2 = yield call(newsYorkTimeDataProcessing, newsYorkTime?.docs);
+            if(payload.source == 'all' || payload.source == 'ny_time') {
+                let newsYorkTime = yield call(newsYorkTimeApiCall, queryParam);
+                if (newsYorkTime.status == 'ok') {
+                    news2 = yield call(newsYorkTimeDataProcessing, newsYorkTime?.docs);
+                }
             }
         } catch (error) {
-            console.error("Error fetching news from newsYorkTime:", error);
         }
-
-        // Try the third API call
         try {
-            let newsApi = yield call(newsApiCall, queryParam);
-            if (newsApi.articles && newsApi.articles?.results?.length > 0) {
-                news3 = yield call(newsProcessing, newsApi.articles?.results);
+            if(payload.source == 'all' || payload.source == 'news_api') {
+                let newsApi = yield call(newsApiCall, queryParam);
+                if (newsApi.articles && newsApi.articles?.results?.length > 0) {
+                    news3 = yield call(newsProcessing, newsApi.articles?.results);
+                }
             }
         } catch (error) {
-            console.error("Error fetching news from newsApi:", error);
         }
-
-        // Merge and shuffle the arrays
         let allNews = yield call(mergeAndShuffleArrays, news, news3, news2);
-
-        // Store the merged news data
         yield put(newsDataStore(allNews));
 
     } catch (error) {
