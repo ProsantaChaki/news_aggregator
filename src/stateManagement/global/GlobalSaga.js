@@ -23,32 +23,54 @@ import {newsApiDataProcessing, newsYorkTimeDataProcessing, newsProcessing, merge
 
 
 function* newsDataFetchWorker({payload}) {
-  try {
-      let news =[]
-      let news2 =[]
-      let news3 =[]
-      payload.search = payload.search.len>0?payload.search:'ne'
-      let  queryParam ="q="+payload.search+"&sortBy=popularity"
-      let newsApiOrg = yield call(newsApiApiCall, queryParam);
-      if(newsApiOrg.status == 'ok') news = yield call(newsApiDataProcessing, newsApiOrg?.articles)
-      let newsYorkTime = yield call(newsYorkTimeApiCall, queryParam);
-      if(newsYorkTime.status == 'ok') {
-          news2 = yield call(newsYorkTimeDataProcessing, newsYorkTime?.docs)
-      }
-      let newsApi = yield call(newsApiCall, queryParam);
+    let news = [];
+    let news2 = [];
+    let news3 = [];
 
-      if(newsApi.articles && newsApi.articles?.results?.length > 0){
-          news3 = yield call(newsProcessing, newsApi.articles?.results)
-      }
-      let allNews = yield call(mergeAndShuffleArrays, news, news3, news2)
+    try {
+        // Setting default search query if payload.search is empty
+        payload.search = payload.search.length > 0 ? payload.search : 'ne';
+        let queryParam = "q=" + payload.search + "&sortBy=popularity";
 
-      yield put(
-          newsDataStore(allNews),
-      );
+        // Try the first API call
+        try {
+            let newsApiOrg = yield call(newsApiApiCall, queryParam);
+            if (newsApiOrg.status == 'ok') {
+                news = yield call(newsApiDataProcessing, newsApiOrg?.articles);
+            }
+        } catch (error) {
+            console.error("Error fetching news from newsApiOrg:", error);
+        }
 
-  } catch (e) {
-    console.log(e);
-  }
+        // Try the second API call
+        try {
+            let newsYorkTime = yield call(newsYorkTimeApiCall, queryParam);
+            if (newsYorkTime.status == 'ok') {
+                news2 = yield call(newsYorkTimeDataProcessing, newsYorkTime?.docs);
+            }
+        } catch (error) {
+            console.error("Error fetching news from newsYorkTime:", error);
+        }
+
+        // Try the third API call
+        try {
+            let newsApi = yield call(newsApiCall, queryParam);
+            if (newsApi.articles && newsApi.articles?.results?.length > 0) {
+                news3 = yield call(newsProcessing, newsApi.articles?.results);
+            }
+        } catch (error) {
+            console.error("Error fetching news from newsApi:", error);
+        }
+
+        // Merge and shuffle the arrays
+        let allNews = yield call(mergeAndShuffleArrays, news, news3, news2);
+
+        // Store the merged news data
+        yield put(newsDataStore(allNews));
+
+    } catch (error) {
+        console.error("Error in processing news data:", error);
+    }
 }
 
 
